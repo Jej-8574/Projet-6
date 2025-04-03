@@ -132,7 +132,12 @@ li:hover {
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
 }
-
+.div-container {
+	display: flex;
+	width: 70%;
+	justify-content: space-around;
+	margin: 0 auto;
+}
 .gallery img {
 	width: 100%;
 
