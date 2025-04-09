@@ -147,6 +147,7 @@ li:hover {
 	border-radius: 20px;
 	font-family: 'Syne';
 	color: #1D6154;
+	background-color: white
 }
 .div-container > *:hover{
 	color: white;
