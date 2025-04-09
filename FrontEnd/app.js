@@ -1,7 +1,7 @@
-    // 1 : crée un tableau global à l'extérieur des fonctions 
-    // 2 : remplir le tableau dans la fonction getWork , avec la valeur du tableau json 
-    // 3 : utiliser le tableau dans la fonction qui filtres ( works )
-    // 4 : s'inspirer du boutton " tous " pour crée les autres bouttons en utilisant la fonction filter sur le tableau que j'aurai crée 
+// 1 : crée un tableau global à l'extérieur des fonctions
+// 2 : remplir le tableau dans la fonction getWork , avec la valeur du tableau json
+// 3 : utiliser le tableau dans la fonction qui filtres ( works )
+// 4 : s'inspirer du boutton " tous " pour crée les autres bouttons en utilisant la fonction filter sur le tableau que j'aurai crée
 
 let allWorks = [];
 
@@ -24,7 +24,7 @@ async function getWorks(filter) {
 
   let worksToDisplay = allWorks;
   if (filter) {
-    worksToDisplay = allWorks.filter(work => work.categoryId === filter);
+    worksToDisplay = allWorks.filter((work) => work.categoryId === filter);
   }
 
   for (let i = 0; i < worksToDisplay.length; i++) {
@@ -48,16 +48,21 @@ async function getCategories() {
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
-    
+
     const json = await response.json();
-    
+
     for (let i = 0; i < json.length; i++) {
       setFilter(json[i]);
     }
-
   } catch (error) {
     console.error(error.message);
   }
+}
+function setTous() {
+  document.querySelector(".tous").addEventListener("click", () => {
+    getWorks("tous");
+    console.log(allWorks);
+  });
 }
 
 function setFilter(data) {
@@ -65,10 +70,11 @@ function setFilter(data) {
   div.className = data.id;
   div.innerHTML = data.name;
   div.addEventListener("click", () => getWorks(data.id));
-  
+
   document.querySelector(".div-container").append(div);
 }
 
 // Toutes les images au chagement
 getWorks();
 getCategories();
+setTous();
