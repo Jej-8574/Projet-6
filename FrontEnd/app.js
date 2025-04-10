@@ -62,6 +62,10 @@ function setTous() {
   document.querySelector(".tous").addEventListener("click", () => {
     getWorks("tous");
     console.log(allWorks);
+    for (let annonce of allWorks) {
+      setFigure(annonce);
+    }
+    
   });
 }
 
