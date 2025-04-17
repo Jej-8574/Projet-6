@@ -268,10 +268,7 @@ li:hover {
 ul li {
 	text-decoration: none;
 }
-.login {
-	font-weight: 500px;
-}
-.mdp-oublie {
+#motdepasse {
 	text-decoration: underline;
 }
 
