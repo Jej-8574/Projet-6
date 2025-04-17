@@ -91,6 +91,12 @@ video {
 	font: inherit;
 	vertical-align: baseline;
 }
+a,
+a:visited {
+  color: black;
+  text-decoration: none;
+}
+
 
 /* HTML5 display-role reset for older browsers */
 article,
@@ -259,7 +265,15 @@ li:hover {
 .tous {
 	cursor: pointer;
 }
-
+ul li {
+	text-decoration: none;
+}
+.login {
+	font-weight: 500px;
+}
+.mdp-oublie {
+	text-decoration: underline;
+}
 
 .gallery img {
 	width: 100%;
