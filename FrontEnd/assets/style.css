@@ -91,10 +91,11 @@ video {
 	font: inherit;
 	vertical-align: baseline;
 }
+
 a,
 a:visited {
-  color: black;
-  text-decoration: none;
+	color: black;
+	text-decoration: none;
 }
 
 
@@ -265,9 +266,11 @@ li:hover {
 .tous {
 	cursor: pointer;
 }
+
 ul li {
 	text-decoration: none;
 }
+
 #motdepasse {
 	text-decoration: underline;
 }
