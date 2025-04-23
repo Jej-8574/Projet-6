@@ -333,3 +333,11 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
+
+.error-login {
+	background-color: #B84947;
+	color: white;
+	display: flex;
+	justify-content: center;
+	padding: 10px;
+}

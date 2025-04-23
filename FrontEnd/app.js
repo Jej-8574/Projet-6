@@ -76,10 +76,3 @@ function setFilter(data) {
 getWorks();
 getCategories();
 setTous();
-
-// étape 1 : crée le html / css de la page " login "
-// étape 2 : crée le JS pour le login
-// étape 3 : crée dans le JS login la fonction qui permet de récupéré via API (api login)
-// étape 4 : enregistrer le token en local avec la fonction localstorage.setItem("token",tokenvalue) (voir doc) avoir le même nom du "token" sur le set ET get.
-// étape 5 : pour récupérer le token dans la page " accueil" il faut utiliser la fonction localstorage.getItem("token")
-// étape 6 : pour se déconnecter du localstorage.removeItem("token")
