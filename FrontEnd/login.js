@@ -26,8 +26,8 @@ async function handleSubmit(event) {
   }
   let result = await response.json();
   const token = result.token;
-  sessionStorage.setItem("authToken",token);
-  window.location.href = "index.html"
+  sessionStorage.setItem("authToken", token);
+  window.location.href = "index.html";
 }
 
 // étape 1 : enregistrer le token en local avec la fonction localstorage.setItem("token",tokenvalue) (voir doc) avoir le même nom du "token" sur le set ET get.
