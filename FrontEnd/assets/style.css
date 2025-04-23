@@ -148,6 +148,8 @@ body {
 	margin: auto;
 	font-family: 'Work Sans';
 	font-size: 14px;
+	margin-top: 70px;
+
 }
 
 header {
@@ -340,4 +342,23 @@ footer nav ul {
 	display: flex;
 	justify-content: center;
 	padding: 10px;
+}
+
+.edit {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+	background-color: black;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+  }
+  
+
+.edit p i {
+	margin-right: 15px;
 }
