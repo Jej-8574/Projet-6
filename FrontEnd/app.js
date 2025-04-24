@@ -72,7 +72,19 @@ function setFilter(data) {
   document.querySelector(".div-container").append(div);
 }
 
+function displayAdminMode() {
+  if (sessionStorage.getItem("authToken")) {
+    console.log("ok");
+    const editBanner = document.createElement("div");
+    editBanner.className = "edit";
+    editBanner.innerHTML =
+      '<p><i class="fa-regular fa-pen-to-square"></i>Mode Édition</p>';
+    document.body.prepend(editBanner);
+  }
+}
+
 // Toutes les images au chagement
 getWorks();
 getCategories();
 setTous();
+displayAdminMode();

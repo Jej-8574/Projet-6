@@ -18,16 +18,18 @@ async function handleSubmit(event) {
     body: JSON.stringify(user),
   });
   console.log(response);
+
   if (response.status != 200) {
     const errorBox = document.createElement("div");
     errorBox.className = "error-login";
     errorBox.innerHTML = "ERREUR LOGIN TRY AGAIN";
     document.querySelector("form").prepend(errorBox);
+  } else {
+    let result = await response.json();
+    const token = result.token;
+    sessionStorage.setItem("authToken", token);
+    window.location.href = "index.html";
   }
-  let result = await response.json();
-  const token = result.token;
-  sessionStorage.setItem("authToken", token);
-  window.location.href = "index.html";
 }
 
 // étape 1 : enregistrer le token en local avec la fonction localstorage.setItem("token",tokenvalue) (voir doc) avoir le même nom du "token" sur le set ET get.
