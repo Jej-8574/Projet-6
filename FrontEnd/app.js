@@ -80,6 +80,7 @@ function displayAdminMode() {
     editBanner.innerHTML =
       '<p><i class="fa-regular fa-pen-to-square"></i>Mode Édition</p>';
     document.body.prepend(editBanner);
+    document.getElementById("login").innerText = "log out"
   }
 }
 
