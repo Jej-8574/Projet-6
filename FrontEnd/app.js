@@ -73,7 +73,7 @@ function setFilter(data) {
 }
 
 function displayAdminMode() {
-  if (sessionStorage.getItem("authToken")) {
+  if (localStorage.getItem("authToken")) {
     console.log("ok");
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
@@ -83,6 +83,29 @@ function displayAdminMode() {
     document.getElementById("login").innerText = "log out"
   }
 }
+// document.getElementById("login").innerText = "log out"
+document.addEventListener('DOMContentLoaded', () => {
+  const link = document.getElementById('login');
+  const token = localStorage.getItem('authToken');
+  // if (!link) return;
+  if (token) {
+    console.log("coucou")
+    link.innerText = 'Logout';
+    link.href = '#';
+    link.addEventListener('click', () => {
+      logout();
+    });
+  } else {
+    link.innerText = 'Login';
+    link.href = 'login.html';
+  }
+ });
+
+function logout() {
+  localStorage.removeItem("authToken");
+  window.location.href = "login.html";
+}
+
 
 // Toutes les images au chagement
 getWorks();

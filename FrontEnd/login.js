@@ -24,32 +24,17 @@ async function handleSubmit(event) {
   } else {
     const result = await response.json();
     const token = result.token;
-    sessionStorage.setItem("authToken", token);
+    localStorage.setItem("authToken", token);
     window.location.href = "index.html";
   }
 }
 
 function logout() {
-  sessionStorage.removeItem("authToken");
+  localStorage.removeItem("authToken");
   window.location.href = "login.html";
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const link = document.querySelector('.login');
-  const token = sessionStorage.getItem('authToken');
-  if (!link) return;
 
-  if (token) {
-    link.textContent = 'Logout';
-    link.href = '#';
-    link.addEventListener('click', () => {
-      logout();
-    });
-  } else {
-    link.textContent = 'Login';
-    link.href = 'login.html';
-  }
-});
 
 
 // faire un boucle pour le boutton login/logout if il ya le token logout et si y'a pas le token login
