@@ -78,7 +78,7 @@ function displayAdminMode() {
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
     editBanner.innerHTML =
-      '<p><i class="fa-regular fa-pen-to-square"></i>Mode Édition</p>';
+      '<p><a href="modal1" class="js-modal"><i class="fa-regular fa-pen-to-square"></i>Mode Édition</a></p>';
     document.body.prepend(editBanner);
     document.getElementById("login").innerText = "log out"
   }
@@ -112,3 +112,17 @@ getWorks();
 getCategories();
 setTous();
 displayAdminMode();
+
+
+const openModal = function (e) {
+  e.preventDefault();
+  const target = document.querySelector(e.target.getAttribute("href"));
+  target.style.display = null;
+  target.setAttribute('aria-hidden')
+  target.setAttribute('aria-modal','true')
+
+}
+
+document.querySelectorAll('.js-modal').forEach((a) => {
+  a.addEventListener("click",openModal);
+})

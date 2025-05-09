@@ -3,6 +3,10 @@
    License: none (public domain)
 */
 
+* {
+	box-sizing: border-box;
+}
+
 html,
 body,
 div,
@@ -361,4 +365,35 @@ footer nav ul {
 
 .edit p i {
 	margin-right: 15px;
+}
+
+.edit a {
+	color: white;
+}
+.edit a:visited {
+	color: white;
+}
+
+/* modale */
+
+.modal {
+	position: fixed;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.modal-wrapper {
+	overflow: auto;
+	background-color: white;
+	max-width: calc(100vh - 20px);
+	max-height: calc(100vh - 20px);
+	padding: 20px;
+	height: 400px;
+	width: 600px;
+
 }
