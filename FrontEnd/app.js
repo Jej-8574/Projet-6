@@ -78,34 +78,33 @@ function displayAdminMode() {
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
     editBanner.innerHTML =
-      '<p><a href="modal1" class="js-modal"><i class="fa-regular fa-pen-to-square"></i>Mode Édition</a></p>';
+      '<p><a href="#modal1" class="js-modal"><i class="fa-regular fa-pen-to-square"></i>Mode Édition</a></p>';
     document.body.prepend(editBanner);
-    document.getElementById("login").innerText = "log out"
+    document.getElementById("login").innerText = "log out";
   }
 }
 // document.getElementById("login").innerText = "log out"
-document.addEventListener('DOMContentLoaded', () => {
-  const link = document.getElementById('login');
-  const token = localStorage.getItem('authToken');
+document.addEventListener("DOMContentLoaded", () => {
+  const link = document.getElementById("login");
+  const token = localStorage.getItem("authToken");
   // if (!link) return;
   if (token) {
-    console.log("coucou")
-    link.innerText = 'Logout';
-    link.href = '#';
-    link.addEventListener('click', () => {
+    console.log("coucou");
+    link.innerText = "Logout";
+    link.href = "#";
+    link.addEventListener("click", () => {
       logout();
     });
   } else {
-    link.innerText = 'Login';
-    link.href = 'login.html';
+    link.innerText = "Login";
+    link.href = "login.html";
   }
- });
+});
 
 function logout() {
   localStorage.removeItem("authToken");
   window.location.href = "login.html";
 }
-
 
 // Toutes les images au chagement
 getWorks();
@@ -113,16 +112,33 @@ getCategories();
 setTous();
 displayAdminMode();
 
+// modale
+
+let modal = null;
 
 const openModal = function (e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
   target.style.display = null;
-  target.setAttribute('aria-hidden')
-  target.setAttribute('aria-modal','true')
+  target.removeAttribute("aria-hidden");
+  target.setAttribute("aria-modal", "true");
+  modal = target
+  modal.addEventListener("click", closeModal);
+  modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
+};
 
-}
+const closeModal = function (e) {
+  if (modal === null) return;
+  e.preventDefault();
+  document.activeElement.blur();
+  modal.style.display = "none";
+  modal.setAttribute("aria-hidden", "true");
+  modal.removeAttribute("aria-modal");
+  modal.removeEventListener("click", closeModal);
+  modal.querySelector(".js-modal-close").removeEventListener("click", closeModal);
+  modal = null;
+};
 
-document.querySelectorAll('.js-modal').forEach((a) => {
-  a.addEventListener("click",openModal);
-})
+document.querySelectorAll(".js-modal").forEach((a) => {
+  a.addEventListener("click", openModal);
+});
