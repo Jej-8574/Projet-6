@@ -29,11 +29,6 @@ async function handleSubmit(event) {
   }
 }
 
-function logout() {
-  localStorage.removeItem("authToken");
-  window.location.href = "login.html";
-}
-
 // faire un boucle pour le boutton login/logout if il ya le token logout et si y'a pas le token login
 // crée dans l'html un message d'erreur et le caché via le CSS et ensuite l'affiche ou non via le JS
 // ajouter un add event listener sur la fonction log out

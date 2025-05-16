@@ -245,6 +245,18 @@ li:hover {
 	grid-row-gap: 20px;
 }
 
+.gallery-modal {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 10px;
+	grid-row-gap: 20px;
+}
+
+.gallery-modal img {
+	width: 100%;
+}
+
 .div-container {
 	display: flex;
 	min-width: 550px;
@@ -370,6 +382,7 @@ footer nav ul {
 .edit a {
 	color: white;
 }
+
 .edit a:visited {
 	color: white;
 }
@@ -378,26 +391,64 @@ footer nav ul {
 
 .modal {
 	position: fixed;
-	top:0;
+	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.8);
+	background: rgba(0, 0, 0, 0.6);
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
+
 .modal-wrapper {
 	overflow: auto;
 	background-color: white;
 	max-width: calc(100vh - 20px);
 	max-height: calc(100vh - 20px);
 	padding: 20px;
-	height: 400px;
 	width: 600px;
 
 }
 
-*:focus {
-	box-shadow: 0 0 10px blue;
+.close-button-container {
+	display: flex;
+	justify-content: end;
+}
+
+.js-modal-close {
+	background-color: white;
+	border: none;
+	font-weight: bold;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+h3 {
+	text-align: center;
+	display: block;
+	font-family: 'Work Sans';
+	font-size: 18px;
+	font-weight: 400;
+	margin-bottom: 20px;
+}
+
+hr {
+	margin: 50px 0 10px 0;
+}
+
+.modal-button-container {
+	display: flex;
+	justify-content: center;
+}
+
+.add-photo {
+	padding: 10px 20px;
+	width: 250px;
+	border: 1px solid #1D6154;
+	border-radius: 20px;
+	font-family: 'Syne';
+	color: white;
+	background-color: #1D6154;
+	margin-top: 20px;
 }

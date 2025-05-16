@@ -34,6 +34,8 @@ function setFigure(data) {
     <figcaption>${data.title}</figcaption>
   `;
   document.querySelector(".gallery").append(figure);
+  const figureClone = figure.cloneNode(true);
+  document.querySelector(".gallery-modal").append(figureClone);
 }
 
 async function getCategories() {
@@ -83,11 +85,9 @@ function displayAdminMode() {
     document.getElementById("login").innerText = "log out";
   }
 }
-// document.getElementById("login").innerText = "log out"
 document.addEventListener("DOMContentLoaded", () => {
   const link = document.getElementById("login");
   const token = localStorage.getItem("authToken");
-  // if (!link) return;
   if (token) {
     console.log("coucou");
     link.innerText = "Logout";
@@ -126,14 +126,16 @@ const openModal = function (e) {
 
   modal = target;
   focusables = Array.from(modal.querySelectorAll(focusableSelector));
-  focusables[0].focus()
+  focusables[0].focus();
   modal.style.display = null;
   modal.removeAttribute("aria-hidden");
   modal.setAttribute("aria-modal", "true");
 
   modal.addEventListener("click", closeModal);
   modal.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop").addEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-stop")
+    .addEventListener("click", stopPropagation);
 };
 
 const closeModal = function (e) {
@@ -147,8 +149,12 @@ const closeModal = function (e) {
   modal.removeAttribute("aria-modal");
 
   modal.removeEventListener("click", closeModal);
-  modal.querySelector(".js-modal-close").removeEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop").removeEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-close")
+    .removeEventListener("click", closeModal);
+  modal
+    .querySelector(".js-modal-stop")
+    .removeEventListener("click", stopPropagation);
 
   modal = null;
 };
@@ -159,17 +165,17 @@ const stopPropagation = function (e) {
 
 const focusInModal = function (e) {
   e.preventDefault();
-  let index = focusables.findIndex((ƒ) => f === modal.querySelector(':focus'))
-  if (index >= focusables.length){
-    index--
+  let index = focusables.findIndex((ƒ) => f === modal.querySelector(":focus"));
+  if (index >= focusables.length) {
+    index--;
   } else {
-    index++
+    index++;
   }
   if (index >= focusables.length) {
-      index = 0
+    index = 0;
   }
-  if (index < 0 ){
-    index = focusables.length - 1
+  if (index < 0) {
+    index = focusables.length - 1;
   }
   focusables[index].focus();
 };
@@ -178,13 +184,18 @@ document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
 });
 
-window.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape' || e.key === 'Esc') {
+window.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" || e.key === "Esc") {
     closeModal(e);
   }
 
-  if (e.key === 'Tab' && modal !== null) {
+  if (e.key === "Tab" && modal !== null) {
     focusInModal(e);
     console.log(focusables);
   }
 });
+
+// faire le bouton modifier à coté de " mes projets " pour avoir accès à la modal
+// afficher avec le bon css la modal
+// afficher les différentes photos du site + le corbeille pour la suppression
+// ne pas les appeler API 2 fois + quelle soit affichés sans refresh de la page
