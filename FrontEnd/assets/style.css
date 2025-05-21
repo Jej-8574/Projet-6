@@ -234,7 +234,6 @@ li:hover {
 
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
 }
 
 .gallery {
@@ -451,4 +450,49 @@ hr {
 	color: white;
 	background-color: #1D6154;
 	margin-top: 20px;
+}
+
+.portfolio-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 2em;
+}
+
+.portfolio-header h2 {
+  margin: 0;
+}
+
+.portfolio-header p {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: black;
+  cursor: pointer;
+}
+
+.portfolio-header i {
+  margin-right: 5px;
+}
+
+.image-container {
+	position: relative;
+	display: inline-block;
+}
+
+.image-container img {
+	display: block;
+}
+
+.image-container .overlay-icon {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	font-size: 16px;
+	cursor: pointer;
+	background-color: black;
+	color: white;
+	padding: 4px;
+	border-radius: 10%;
 }

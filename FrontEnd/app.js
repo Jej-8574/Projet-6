@@ -34,8 +34,15 @@ function setFigure(data) {
     <figcaption>${data.title}</figcaption>
   `;
   document.querySelector(".gallery").append(figure);
-  const figureClone = figure.cloneNode(true);
-  document.querySelector(".gallery-modal").append(figureClone);
+  const figure2 = document.createElement("figure");
+  figure2.innerHTML = `
+  <div class="image-container">
+    <img src="${data.imageUrl}" alt="${data.title}">
+    <figcaption>${data.title}</figcaption>
+    <i class="fa-solid fa-trash-can overlay-icon"></i>
+  </div>
+`;
+  document.querySelector(".gallery-modal").append(figure2);
 }
 
 async function getCategories() {
@@ -194,6 +201,7 @@ window.addEventListener("keydown", function (e) {
     console.log(focusables);
   }
 });
+
 
 // faire le bouton modifier à coté de " mes projets " pour avoir accès à la modal
 // afficher avec le bon css la modal
