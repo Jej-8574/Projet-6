@@ -4,7 +4,6 @@
 
 let allWorks = [];
 
-
 // ==========================
 // ======= Fonctions ========
 // ==========================
@@ -40,7 +39,7 @@ async function getWorks(filter) {
 // ---- Affichage des figures dans la galerie et la modale ----
 function setFigure(data) {
   const figure = document.createElement("figure");
-  figure.setAttribute("id",data.id)
+  figure.setAttribute("id", data.id);
   figure.innerHTML = `
     <img src="${data.imageUrl}" alt="${data.title}">
     <figcaption>${data.title}</figcaption>
@@ -55,7 +54,7 @@ function setFigure(data) {
     <i id="trash" class="fa-solid fa-trash-can overlay-icon"></i>
   </div>
 `;
-const trashIcon = figure2.querySelector(".fa-trash-can");
+  const trashIcon = figure2.querySelector(".fa-trash-can");
   trashIcon.addEventListener("click", (e) => {
     deleteWorks(data.id, figure2);
   });
@@ -105,7 +104,6 @@ function setFilter(data) {
 // ---- Affichage du mode admin si connecté ----
 function displayAdminMode() {
   if (localStorage.getItem("authToken")) {
-    console.log("ok");
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
     editBanner.innerHTML =
@@ -121,7 +119,6 @@ function logout() {
   window.location.href = "login.html";
 }
 
-
 // ==========================
 // == Événements initiaux ===
 // ==========================
@@ -131,7 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const link = document.getElementById("login");
   const token = localStorage.getItem("authToken");
   if (token) {
-    console.log("coucou");
     link.innerText = "Logout";
     link.href = "#";
     link.addEventListener("click", () => {
@@ -148,7 +144,6 @@ getWorks();
 getCategories();
 setTous();
 displayAdminMode();
-
 
 // ==========================
 // ======== Modale ==========
@@ -249,14 +244,14 @@ async function deleteWorks(id, figureElement) {
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (response.ok) {
       figureElement.remove();
       // alert("Image supprimée !");
-      document.getElementById(id).remove()
+      document.getElementById(id).remove();
     } else {
       alert("Échec de la suppression");
     }
@@ -266,8 +261,33 @@ async function deleteWorks(id, figureElement) {
   }
 }
 
+// deuxieme modal
 
+const switchModal = function () {
+  document.querySelector(".modal-wrapper").innerHTML =`
+        <div class="close-button-container">
+          <button class="js-modal-close">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <h3>Ajout photo</h3>
+        <div class="add-photo-form">
+        <form action="#" method="post">
+          <label for="name">Nom</label>
+          <input type="text" name="name" id="name" />
+          <label for="category">Catégorie</label>
+          <input type="category" name="category" id="category" />
 
+        </form>
+        </div>
+        <hr />
+        <div class="modal-button-container">
+          <button class="validate-button">Valider</button>`;
+};
+
+const addPhotoButton = document.querySelector(".add-photo-button");
+console.log(addPhotoButton);
+addPhotoButton.addEventListener("click", switchModal);
 
 // ==========================
 // ====== TODO / Notes ======
@@ -277,4 +297,3 @@ async function deleteWorks(id, figureElement) {
 // afficher avec le bon css la modal
 // afficher les différentes photos du site + le corbeille pour la suppression
 // ne pas les appeler API 2 fois + quelle soit affichés sans refresh de la page
-

@@ -441,7 +441,7 @@ hr {
 	justify-content: center;
 }
 
-.add-photo {
+.add-photo-button {
 	padding: 10px 20px;
 	width: 250px;
 	border: 1px solid #1D6154;
@@ -495,4 +495,15 @@ hr {
 	color: white;
 	padding: 4px;
 	border-radius: 10%;
+}
+
+.validate-button {
+	padding: 10px 20px;
+	width: 250px;
+	border: 1px solid #A7A7A7;
+	border-radius: 20px;
+	font-family: 'Syne';
+	color: white;
+	background-color: #A7A7A7;
+	margin-top: 20px;
 }
