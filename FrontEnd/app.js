@@ -271,9 +271,9 @@ const switchModal = function () {
           </button>
         </div>
         <h3>Ajout photo</h3>
-        <div class="add-photo-form">
+        <div class="add-photo-form form">
         <form action="#" method="post">
-          <label for="name">Nom</label>
+          <label for="name">Titre</label>
           <input type="text" name="name" id="name" />
           <label for="category">Catégorie</label>
           <input type="category" name="category" id="category" />
@@ -286,7 +286,6 @@ const switchModal = function () {
 };
 
 const addPhotoButton = document.querySelector(".add-photo-button");
-console.log(addPhotoButton);
 addPhotoButton.addEventListener("click", switchModal);
 
 // ==========================
