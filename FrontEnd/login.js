@@ -28,12 +28,3 @@ async function handleSubmit(event) {
     window.location.href = "index.html";
   }
 }
-
-// faire un boucle pour le boutton login/logout if il ya le token logout et si y'a pas le token login
-// crée dans l'html un message d'erreur et le caché via le CSS et ensuite l'affiche ou non via le JS
-// ajouter un add event listener sur la fonction log out
-
-// étape 1 : enregistrer le token en local avec la fonction localstorage.setItem("token",tokenvalue) (voir doc) avoir le même nom du "token" sur le set ET get.
-// étape 2 : pour récupérer le token dans la page " accueil" il faut utiliser la fonction localstorage.getItem("token")
-// étape 3 : pour se déconnecter du localstorage.removeItem("token")a
-// étape 4 : quand je refresh la page savoir si il y'a le token pour rediriger vers la page login OU la page d'accueil

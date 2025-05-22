@@ -1,5 +1,15 @@
+// ==========================
+// ======== Données =========
+// ==========================
+
 let allWorks = [];
 
+
+// ==========================
+// ======= Fonctions ========
+// ==========================
+
+// ---- Récupération des travaux ----
 async function getWorks(filter) {
   document.querySelector(".gallery").innerHTML = "";
 
@@ -27,6 +37,7 @@ async function getWorks(filter) {
   }
 }
 
+// ---- Affichage des figures dans la galerie et la modale ----
 function setFigure(data) {
   const figure = document.createElement("figure");
   figure.innerHTML = `
@@ -34,17 +45,23 @@ function setFigure(data) {
     <figcaption>${data.title}</figcaption>
   `;
   document.querySelector(".gallery").append(figure);
+
   const figure2 = document.createElement("figure");
   figure2.innerHTML = `
   <div class="image-container">
     <img src="${data.imageUrl}" alt="${data.title}">
     <figcaption>${data.title}</figcaption>
-    <i class="fa-solid fa-trash-can overlay-icon"></i>
+    <i id="trash" class="fa-solid fa-trash-can overlay-icon"></i>
   </div>
 `;
+const trashIcon = figure2.querySelector(".fa-trash-can");
+  trashIcon.addEventListener("click", (e) => {
+    deleteWorks(data.id, figure2); // Passe l’id + le bloc à supprimer
+  });
   document.querySelector(".gallery-modal").append(figure2);
 }
 
+// ---- Récupération des catégories et création des filtres ----
 async function getCategories() {
   const url = "http://localhost:5678/api/categories";
   try {
@@ -62,6 +79,8 @@ async function getCategories() {
     console.error(error.message);
   }
 }
+
+// ---- Gestion du bouton "Tous" ----
 function setTous() {
   document.querySelector(".tous").addEventListener("click", () => {
     getWorks("tous");
@@ -72,6 +91,7 @@ function setTous() {
   });
 }
 
+// ---- Création des boutons de filtre dynamiques ----
 function setFilter(data) {
   const div = document.createElement("div");
   div.className = data.id;
@@ -81,6 +101,7 @@ function setFilter(data) {
   document.querySelector(".div-container").append(div);
 }
 
+// ---- Affichage du mode admin si connecté ----
 function displayAdminMode() {
   if (localStorage.getItem("authToken")) {
     console.log("ok");
@@ -92,6 +113,19 @@ function displayAdminMode() {
     document.getElementById("login").innerText = "log out";
   }
 }
+
+// ---- Déconnexion ----
+function logout() {
+  localStorage.removeItem("authToken");
+  window.location.href = "login.html";
+}
+
+
+// ==========================
+// == Événements initiaux ===
+// ==========================
+
+// ---- Gère l’état du bouton login/logout au chargement ----
 document.addEventListener("DOMContentLoaded", () => {
   const link = document.getElementById("login");
   const token = localStorage.getItem("authToken");
@@ -108,23 +142,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function logout() {
-  localStorage.removeItem("authToken");
-  window.location.href = "login.html";
-}
-
-// Toutes les images au chagement
+// ---- Appels au chargement ----
 getWorks();
 getCategories();
 setTous();
 displayAdminMode();
 
-// modale
+
+// ==========================
+// ======== Modale ==========
+// ==========================
 
 let modal = null;
 const focusableSelector = "button, a, input, textarea";
 let focusables = [];
 
+// ---- Ouverture de la modale ----
 const openModal = function (e) {
   e.preventDefault();
 
@@ -145,6 +178,7 @@ const openModal = function (e) {
     .addEventListener("click", stopPropagation);
 };
 
+// ---- Fermeture de la modale ----
 const closeModal = function (e) {
   if (modal === null) return;
   e.preventDefault();
@@ -166,10 +200,12 @@ const closeModal = function (e) {
   modal = null;
 };
 
+// ---- Empêche fermeture au clic intérieur ----
 const stopPropagation = function (e) {
   e.stopPropagation();
 };
 
+// ---- Gestion du focus clavier dans la modale ----
 const focusInModal = function (e) {
   e.preventDefault();
   let index = focusables.findIndex((ƒ) => f === modal.querySelector(":focus"));
@@ -187,10 +223,12 @@ const focusInModal = function (e) {
   focusables[index].focus();
 };
 
+// ---- Listeners d'ouverture de modale ----
 document.querySelectorAll(".js-modal").forEach((a) => {
   a.addEventListener("click", openModal);
 });
 
+// ---- Raccourcis clavier dans la modale ----
 window.addEventListener("keydown", function (e) {
   if (e.key === "Escape" || e.key === "Esc") {
     closeModal(e);
@@ -202,8 +240,40 @@ window.addEventListener("keydown", function (e) {
   }
 });
 
+async function deleteWorks(id, figureElement) {
+  const url = `http://localhost:5678/api/works/${id}`;
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    if (response.ok) {
+      // Supprime le bloc du DOM
+      figureElement.remove();
+      alert("Image supprimée !");
+    } else {
+      alert("Échec de la suppression");
+    }
+  } catch (error) {
+    console.error("Erreur réseau :", error);
+    alert("Une erreur est survenue");
+  }
+}
+
+
+
+
+// ==========================
+// ====== TODO / Notes ======
+// ==========================
 
 // faire le bouton modifier à coté de " mes projets " pour avoir accès à la modal
 // afficher avec le bon css la modal
 // afficher les différentes photos du site + le corbeille pour la suppression
 // ne pas les appeler API 2 fois + quelle soit affichés sans refresh de la page
+
