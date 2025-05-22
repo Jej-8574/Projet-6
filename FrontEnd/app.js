@@ -40,6 +40,7 @@ async function getWorks(filter) {
 // ---- Affichage des figures dans la galerie et la modale ----
 function setFigure(data) {
   const figure = document.createElement("figure");
+  figure.setAttribute("id",data.id)
   figure.innerHTML = `
     <img src="${data.imageUrl}" alt="${data.title}">
     <figcaption>${data.title}</figcaption>
@@ -56,7 +57,7 @@ function setFigure(data) {
 `;
 const trashIcon = figure2.querySelector(".fa-trash-can");
   trashIcon.addEventListener("click", (e) => {
-    deleteWorks(data.id, figure2); // Passe l’id + le bloc à supprimer
+    deleteWorks(data.id, figure2);
   });
   document.querySelector(".gallery-modal").append(figure2);
 }
@@ -253,9 +254,9 @@ async function deleteWorks(id, figureElement) {
     });
 
     if (response.ok) {
-      // Supprime le bloc du DOM
       figureElement.remove();
-      alert("Image supprimée !");
+      // alert("Image supprimée !");
+      document.getElementById(id).remove()
     } else {
       alert("Échec de la suppression");
     }
