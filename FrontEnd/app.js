@@ -264,26 +264,34 @@ async function deleteWorks(id, figureElement) {
 // deuxieme modal
 
 const switchModal = function () {
-  document.querySelector(".modal-wrapper").innerHTML =`
-        <div class="close-button-container">
-          <button class="js-modal-close">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <h3>Ajout photo</h3>
-        <div class="add-photo-form form">
-        <form action="#" method="post">
-          <label for="name">Titre</label>
-          <input type="text" name="name" id="name" />
-          <label for="category">Catégorie</label>
-          <input type="category" name="category" id="category" />
-
-        </form>
-        </div>
-        <hr />
-        <div class="modal-button-container">
-          <button class="validate-button">Valider</button>`;
+  console.log("clicked");
+  document.querySelector(".modal-wrapper").innerHTML = `
+    <div class="modal-buttons-container">
+      <button class="js-modal-back">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <button class="js-modal-close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <h3>Ajout photo</h3>
+    <div class="form add-photo-form">
+      <form action="#" method="post">
+        <label for="title">Titre</label>
+        <input type="text" name="title" id="title" />
+        <label for="category">Catégorie</label>
+        <input type="category" name="category" id="category" />
+        <hr />  
+        <input type="submit" value="Valider" />
+      </form>
+    </div>
+  `;
+  const closeButton = document.querySelector(".js-modal-close");
+  closeButton.addEventListener("click", closeModal);
 };
+
+// const backButton = document.querySelector(".fa-arrow-left")
+// backButton.addEventListener('click', => )
 
 const addPhotoButton = document.querySelector(".add-photo-button");
 addPhotoButton.addEventListener("click", switchModal);

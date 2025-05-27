@@ -412,15 +412,21 @@ footer nav ul {
 
 .close-button-container {
 	display: flex;
-	justify-content: end;
+	justify-content: flex-end;
 }
 
-.js-modal-close {
+.js-modal-close , .js-modal-back {
 	background-color: white;
 	border: none;
 	font-weight: bold;
 	font-size: 18px;
 	cursor: pointer;
+}
+
+
+.modal-buttons-container {
+	display: flex;
+	justify-content: space-between;
 }
 
 h3 {
@@ -440,7 +446,9 @@ hr {
 	display: flex;
 	justify-content: center;
 }
-
+.add-photo-form {
+	width: 70%;
+}
 .add-photo-button {
 	padding: 10px 20px;
 	width: 250px;
@@ -453,27 +461,27 @@ hr {
 }
 
 .portfolio-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 2em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	margin-bottom: 2em;
 }
 
 .portfolio-header h2 {
-  margin: 0;
+	margin: 0;
 }
 
 .portfolio-header p {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  color: black;
-  cursor: pointer;
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	color: black;
+	cursor: pointer;
 }
 
 .portfolio-header i {
-  margin-right: 5px;
+	margin-right: 5px;
 }
 
 .image-container {
@@ -500,10 +508,10 @@ hr {
 .validate-button {
 	padding: 10px 20px;
 	width: 250px;
-	border: 1px solid #A7A7A7;
+	border: 1px solid #1D6154;
 	border-radius: 20px;
 	font-family: 'Syne';
 	color: white;
-	background-color: #A7A7A7;
+	background-color: #1D6154;
 	margin-top: 20px;
 }
