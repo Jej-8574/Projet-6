@@ -288,19 +288,12 @@ const switchModal = function () {
   `;
   const closeButton = document.querySelector(".js-modal-close");
   closeButton.addEventListener("click", closeModal);
+
+  
 };
 
-// const backButton = document.querySelector(".fa-arrow-left")
-// backButton.addEventListener('click', => )
+const backButton = document.querySelector('.js-modal-back')
+backButton.addEventListener("click", toggleModdal)
 
 const addPhotoButton = document.querySelector(".add-photo-button");
 addPhotoButton.addEventListener("click", switchModal);
-
-// ==========================
-// ====== TODO / Notes ======
-// ==========================
-
-// faire le bouton modifier à coté de " mes projets " pour avoir accès à la modal
-// afficher avec le bon css la modal
-// afficher les différentes photos du site + le corbeille pour la suppression
-// ne pas les appeler API 2 fois + quelle soit affichés sans refresh de la page
