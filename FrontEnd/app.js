@@ -146,7 +146,9 @@ const openModal = function (e) {
   modal.setAttribute("aria-modal", "true");
 
   modal.addEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop")?.addEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-stop")
+    ?.addEventListener("click", stopPropagation);
 
   openModal1(); // injecte la modale 1 au démarrage
 };
@@ -159,8 +161,12 @@ const closeModal = function (e) {
   modal.setAttribute("aria-hidden", "true");
   modal.removeAttribute("aria-modal");
   modal.removeEventListener("click", closeModal);
-  modal.querySelector(".js-modal-close")?.removeEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop")?.removeEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-close")
+    ?.removeEventListener("click", closeModal);
+  modal
+    .querySelector(".js-modal-stop")
+    ?.removeEventListener("click", stopPropagation);
   modal = null;
 };
 
@@ -226,6 +232,13 @@ const switchModal = function () {
       <button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <h3>Ajout photo</h3>
+    <div class="button-add-photo">
+    <i class="fa-solid fa-image"></i>
+    <label for="file-upload" class="file-upload">
+ + Ajouter photo
+</label>
+<input type="file" id="file-upload" style="display: none;" />
+</div>
     <div class="form add-photo-form">
       <form action="#" method="post">
         <label for="title">Titre</label>
@@ -238,8 +251,12 @@ const switchModal = function () {
     </div>
   `;
 
-  document.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  document.querySelector(".js-modal-back").addEventListener("click", openModal1);
+  document
+    .querySelector(".js-modal-close")
+    .addEventListener("click", closeModal);
+  document
+    .querySelector(".js-modal-back")
+    .addEventListener("click", openModal1);
 };
 
 // ==========================
@@ -261,8 +278,12 @@ function openModal1() {
     </div>
   `;
 
-  document.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  document.querySelector(".add-photo-button").addEventListener("click", switchModal);
+  document
+    .querySelector(".js-modal-close")
+    .addEventListener("click", closeModal);
+  document
+    .querySelector(".add-photo-button")
+    .addEventListener("click", switchModal);
 
   const container = document.querySelector(".gallery-modal");
   container.innerHTML = "";

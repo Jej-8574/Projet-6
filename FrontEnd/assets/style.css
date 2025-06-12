@@ -515,3 +515,44 @@ hr {
 	background-color: #1D6154;
 	margin-top: 20px;
 }
+
+/* .file-upload {
+	background-color:#E8F1F6;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 420px;
+	height: 169px;
+	margin-left: 74px;
+	border-radius: 3px;
+} */
+
+.button-add-photo {
+	background-color: #E8F1F6;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 420px;
+	height: 169px;
+	margin-left: 74px;
+	border-radius: 3px;
+	gap: 10px;
+}
+
+i.fa-image {
+	color: #B9C5CC;
+	font-size: 60px;
+}
+
+.file-upload {
+	background-color: #CBD6DC;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 173px;
+	height: 36px;
+	border-radius: 50px;
+	color: #306685;
+	cursor: pointer;
+}
