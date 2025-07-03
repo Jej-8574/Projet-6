@@ -92,7 +92,7 @@ function displayAdminMode() {
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
     editBanner.innerHTML =
-      '<p><a href="#modal1" class="js-modal"><i class="fa-regular fa-pen-to-square"></i>Mode Édition</a></p>';
+  '<p><a href="#modal1"><i class="fa-regular fa-pen-to-square"></i>Mode Édition</a></p>';
     document.body.prepend(editBanner);
     document.getElementById("login").innerText = "log out";
   }
@@ -243,8 +243,11 @@ const switchModal = function () {
       <form action="#" method="post">
         <label for="title">Titre</label>
         <input type="text" name="title" id="title" />
-        <label for="category">Catégorie</label>
-        <input type="text" name="category" id="category" />
+<label for="category">Catégorie</label>
+<select name="category" id="category">
+  <option value=""></option>
+</select>
+
         <hr />  
         <input type="submit" value="Valider" />
       </form>
@@ -257,6 +260,24 @@ const switchModal = function () {
   document
     .querySelector(".js-modal-back")
     .addEventListener("click", openModal1);
+
+    const selectCategory = document.getElementById("category");
+
+fetch("http://localhost:5678/api/categories")
+  .then((res) => res.json())
+  .then((categories) => {
+    categories.forEach((cat) => {
+      console.log(cat)
+      const option = document.createElement("option");
+      option.value = cat.id;
+      option.textContent = cat.name;
+      selectCategory.appendChild(option);
+    });
+  })
+  .catch((err) => {
+    console.error("Erreur chargement catégories :", err);
+  });
+
 };
 
 // ==========================
@@ -306,3 +327,7 @@ function openModal1() {
     container.appendChild(figure);
   }
 }
+
+
+
+// Changer l'innerhtml de la modale et l'implanter directement dans l'html et utiliser la propriète hidden -> ( visibility ) (look) avec tous les boutons ( flêches etc )
