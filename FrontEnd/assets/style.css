@@ -565,3 +565,10 @@ i.fa-image {
   background-color: white;
   cursor: pointer;
 }
+.modal {
+  display: none;
+}
+
+.modal.is-visible {
+  display: flex;
+}

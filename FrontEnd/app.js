@@ -1,13 +1,5 @@
-// ==========================
-// ======== Données =========
-// ==========================
 let allWorks = [];
 
-// ==========================
-// ======= Fonctions ========
-// ==========================
-
-// ---- Récupération des travaux ----
 async function getWorks(filter) {
   document.querySelector(".gallery").innerHTML = "";
 
@@ -33,7 +25,6 @@ async function getWorks(filter) {
   }
 }
 
-// ---- Affichage des figures dans la galerie et la modale ----
 function setFigure(data) {
   const figure = document.createElement("figure");
   figure.setAttribute("id", data.id);
@@ -48,7 +39,7 @@ function setFigure(data) {
     <div class="image-container">
       <img src="${data.imageUrl}" alt="${data.title}">
       <figcaption>${data.title}</figcaption>
-      <i id="trash" class="fa-solid fa-trash-can overlay-icon"></i>
+      <i class="fa-solid fa-trash-can overlay-icon"></i>
     </div>
   `;
   figure2.querySelector(".fa-trash-can").addEventListener("click", () => {
@@ -57,7 +48,6 @@ function setFigure(data) {
   document.querySelector(".gallery-modal").append(figure2);
 }
 
-// ---- Récupération des catégories et création des filtres ----
 async function getCategories() {
   const url = "http://localhost:5678/api/categories";
   try {
@@ -70,14 +60,12 @@ async function getCategories() {
   }
 }
 
-// ---- Bouton "Tous" ----
 function setTous() {
   document.querySelector(".tous").addEventListener("click", () => {
-    getWorks(); // on récupère tout sans filtre
+    getWorks();
   });
 }
 
-// ---- Création des filtres dynamiques ----
 function setFilter(data) {
   const div = document.createElement("div");
   div.className = data.id;
@@ -86,27 +74,22 @@ function setFilter(data) {
   document.querySelector(".div-container").append(div);
 }
 
-// ---- Mode admin si connecté ----
 function displayAdminMode() {
   if (localStorage.getItem("authToken")) {
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
     editBanner.innerHTML =
-  '<p><a href="#modal1"><i class="fa-regular fa-pen-to-square"></i>Mode Édition</a></p>';
+      '<p><a href="#modal1"><i class="fa-regular fa-pen-to-square"></i>Mode Édition</a></p>';
     document.body.prepend(editBanner);
     document.getElementById("login").innerText = "log out";
   }
 }
 
-// ---- Déconnexion ----
 function logout() {
   localStorage.removeItem("authToken");
   window.location.href = "login.html";
 }
 
-// ==========================
-// == Événements initiaux ===
-// ==========================
 document.addEventListener("DOMContentLoaded", () => {
   const link = document.getElementById("login");
   const token = localStorage.getItem("authToken");
@@ -125,10 +108,7 @@ getCategories();
 setTous();
 displayAdminMode();
 
-// ==========================
-// ======== Modale ==========
-// ==========================
-
+// ========== MODALE ==========
 let modal = null;
 const focusableSelector = "button, a, input, textarea";
 let focusables = [];
@@ -141,16 +121,14 @@ const openModal = function (e) {
   modal = target;
   focusables = Array.from(modal.querySelectorAll(focusableSelector));
   focusables[0]?.focus();
-  modal.style.display = null;
+  modal.style.display = "flex";
   modal.removeAttribute("aria-hidden");
   modal.setAttribute("aria-modal", "true");
 
   modal.addEventListener("click", closeModal);
-  modal
-    .querySelector(".js-modal-stop")
-    ?.addEventListener("click", stopPropagation);
+  modal.querySelector(".js-modal-stop")?.addEventListener("click", stopPropagation);
 
-  openModal1(); // injecte la modale 1 au démarrage
+  openModal1();
 };
 
 const closeModal = function (e) {
@@ -161,12 +139,8 @@ const closeModal = function (e) {
   modal.setAttribute("aria-hidden", "true");
   modal.removeAttribute("aria-modal");
   modal.removeEventListener("click", closeModal);
-  modal
-    .querySelector(".js-modal-close")
-    ?.removeEventListener("click", closeModal);
-  modal
-    .querySelector(".js-modal-stop")
-    ?.removeEventListener("click", stopPropagation);
+  modal.querySelector(".js-modal-close")?.removeEventListener("click", closeModal);
+  modal.querySelector(".js-modal-stop")?.removeEventListener("click", stopPropagation);
   modal = null;
 };
 
@@ -192,10 +166,7 @@ window.addEventListener("keydown", function (e) {
   if (e.key === "Tab" && modal !== null) focusInModal(e);
 });
 
-// ==========================
-// == Gestion suppression ===
-// ==========================
-
+// ========== SUPPRESSION ==========
 async function deleteWorks(id, figureElement) {
   const url = `http://localhost:5678/api/works/${id}`;
   const token = localStorage.getItem("authToken");
@@ -220,91 +191,13 @@ async function deleteWorks(id, figureElement) {
   }
 }
 
-// ==========================
-// == Switch modale photo ===
-// ==========================
-
-const switchModal = function () {
-  const wrapper = document.querySelector(".modal-wrapper");
-  wrapper.innerHTML = `
-    <div class="modal-buttons-container">
-      <button class="js-modal-back"><i class="fa-solid fa-arrow-left"></i></button>
-      <button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <h3>Ajout photo</h3>
-    <div class="button-add-photo">
-    <i class="fa-solid fa-image"></i>
-    <label for="file-upload" class="file-upload">
- + Ajouter photo
-</label>
-<input type="file" id="file-upload" style="display: none;" />
-</div>
-    <div class="form add-photo-form">
-      <form action="#" method="post">
-        <label for="title">Titre</label>
-        <input type="text" name="title" id="title" />
-<label for="category">Catégorie</label>
-<select name="category" id="category">
-  <option value=""></option>
-</select>
-
-        <hr />  
-        <input type="submit" value="Valider" />
-      </form>
-    </div>
-  `;
-
-  document
-    .querySelector(".js-modal-close")
-    .addEventListener("click", closeModal);
-  document
-    .querySelector(".js-modal-back")
-    .addEventListener("click", openModal1);
-
-    const selectCategory = document.getElementById("category");
-
-fetch("http://localhost:5678/api/categories")
-  .then((res) => res.json())
-  .then((categories) => {
-    categories.forEach((cat) => {
-      console.log(cat)
-      const option = document.createElement("option");
-      option.value = cat.id;
-      option.textContent = cat.name;
-      selectCategory.appendChild(option);
-    });
-  })
-  .catch((err) => {
-    console.error("Erreur chargement catégories :", err);
-  });
-
-};
-
-// ==========================
-// == Modale galerie photo ==
-// ==========================
+// ========== MODALE PHOTO ==========
 
 function openModal1() {
-  const wrapper = document.querySelector(".modal-wrapper");
+  openModal1Only();
 
-  wrapper.innerHTML = `
-    <div class="close-button-container">
-      <button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <h3>Galerie Photo</h3>
-    <div class="gallery-modal"></div>
-    <hr />
-    <div class="modal-button-container">
-      <button class="add-photo-button">Ajouter une photo</button>
-    </div>
-  `;
-
-  document
-    .querySelector(".js-modal-close")
-    .addEventListener("click", closeModal);
-  document
-    .querySelector(".add-photo-button")
-    .addEventListener("click", switchModal);
+  document.querySelector(".js-modal-close").addEventListener("click", closeModal);
+  document.querySelector(".add-photo-button").addEventListener("click", switchModal);
 
   const container = document.querySelector(".gallery-modal");
   container.innerHTML = "";
@@ -326,6 +219,40 @@ function openModal1() {
 
     container.appendChild(figure);
   }
+}
+
+function switchModal() {
+  openModal2Only();
+
+  document.querySelector(".js-modal-close").addEventListener("click", closeModal);
+  document.querySelector(".js-modal-back").addEventListener("click", openModal1Only);
+
+  const selectCategory = document.getElementById("category");
+  selectCategory.innerHTML = '<option value=""></option>';
+
+  fetch("http://localhost:5678/api/categories")
+    .then((res) => res.json())
+    .then((categories) => {
+      categories.forEach((cat) => {
+        const option = document.createElement("option");
+        option.value = cat.id;
+        option.textContent = cat.name;
+        selectCategory.appendChild(option);
+      });
+    })
+    .catch((err) => {
+      console.error("Erreur chargement catégories :", err);
+    });
+}
+
+function openModal1Only() {
+  document.getElementById("modal1").style.display = "flex";
+  document.getElementById("modal2").style.display = "none";
+}
+
+function openModal2Only() {
+  document.getElementById("modal1").style.display = "none";
+  document.getElementById("modal2").style.display = "flex";
 }
 
 
