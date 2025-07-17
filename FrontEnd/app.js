@@ -126,7 +126,9 @@ const openModal = function (e) {
   modal.setAttribute("aria-modal", "true");
 
   modal.addEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop")?.addEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-stop")
+    ?.addEventListener("click", stopPropagation);
 
   openModal1();
 };
@@ -139,8 +141,12 @@ const closeModal = function (e) {
   modal.setAttribute("aria-hidden", "true");
   modal.removeAttribute("aria-modal");
   modal.removeEventListener("click", closeModal);
-  modal.querySelector(".js-modal-close")?.removeEventListener("click", closeModal);
-  modal.querySelector(".js-modal-stop")?.removeEventListener("click", stopPropagation);
+  modal
+    .querySelector(".js-modal-close")
+    ?.removeEventListener("click", closeModal);
+  modal
+    .querySelector(".js-modal-stop")
+    ?.removeEventListener("click", stopPropagation);
   modal = null;
 };
 
@@ -196,8 +202,12 @@ async function deleteWorks(id, figureElement) {
 function openModal1() {
   openModal1Only();
 
-  document.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  document.querySelector(".add-photo-button").addEventListener("click", switchModal);
+  document
+    .querySelector(".js-modal-close")
+    .addEventListener("click", closeModal);
+  document
+    .querySelector(".add-photo-button")
+    .addEventListener("click", switchModal);
 
   const container = document.querySelector(".gallery-modal");
   container.innerHTML = "";
@@ -232,12 +242,15 @@ document.querySelectorAll(".js-modal-close").forEach((btn) => {
   });
 });
 
-
 function switchModal() {
   openModal2Only();
 
-  document.querySelector(".js-modal-close").addEventListener("click", closeModal);
-  document.querySelector(".js-modal-back").addEventListener("click", openModal1Only);
+  document
+    .querySelector(".js-modal-close")
+    .addEventListener("click", closeModal);
+  document
+    .querySelector(".js-modal-back")
+    .addEventListener("click", openModal1Only);
 
   const selectCategory = document.getElementById("category");
   selectCategory.innerHTML = '<option value=""></option>';
@@ -257,7 +270,6 @@ function switchModal() {
     });
 }
 
-
 function openModal1Only() {
   document.getElementById("modal1").style.display = "flex";
   document.getElementById("modal2").style.display = "none";
@@ -267,3 +279,48 @@ function openModal2Only() {
   document.getElementById("modal1").style.display = "none";
   document.getElementById("modal2").style.display = "flex";
 }
+const fileInput = document.getElementById("file-upload");
+const preview = document.getElementById("img-preview");
+const uploadLabel = document.getElementById("upload-label");
+
+fileInput.addEventListener("change", function () {
+  const file = this.files[0];
+  if (file && file.type.startsWith("image/")) {
+    const previewURL = URL.createObjectURL(file);
+    preview.src = previewURL;
+    preview.style.display = "block";
+    uploadLabel.style.display = "none";
+  }
+});
+
+document.querySelector(".add-photo-form form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const file = document.getElementById("file-upload").files[0];
+  const title = document.getElementById("title").value;
+  const category = document.getElementById("category").value;
+  const token = localStorage.getItem("authToken");
+
+  if (!file || title === "" || category === "") return;
+
+  const formData = new FormData();
+  formData.append("image", file);
+  formData.append("title", title);
+  formData.append("category", category);
+
+  const res = await fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
+  });
+
+  if (res.ok) {
+    allWorks = [];
+    getWorks();
+    openModal1Only();
+    e.target.reset();
+    preview.style.display = "none";
+    uploadLabel.style.display = "flex";
+  }
+});
+
