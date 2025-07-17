@@ -2,17 +2,16 @@ let allWorks = [];
 
 async function getWorks(filter) {
   document.querySelector(".gallery").innerHTML = "";
+  document.querySelector(".gallery-modal").innerHTML = "";
 
-  if (allWorks.length === 0) {
-    const url = "http://localhost:5678/api/works";
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`Response status: ${response.status}`);
-      allWorks = await response.json();
-    } catch (error) {
-      console.error(error.message);
-      return;
-    }
+  const url = "http://localhost:5678/api/works";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
+    allWorks = await response.json();
+  } catch (error) {
+    console.error(error.message);
+    return;
   }
 
   let worksToDisplay = allWorks;
@@ -24,6 +23,7 @@ async function getWorks(filter) {
     setFigure(worksToDisplay[i]);
   }
 }
+
 
 function setFigure(data) {
   const figure = document.createElement("figure");
@@ -188,6 +188,7 @@ async function deleteWorks(id, figureElement) {
     if (response.ok) {
       figureElement.remove();
       document.getElementById(id)?.remove();
+      allWorks=allWorks.filter(item => item.id !== id)
     } else {
       alert("Échec de la suppression");
     }
@@ -279,6 +280,9 @@ function openModal2Only() {
   document.getElementById("modal1").style.display = "none";
   document.getElementById("modal2").style.display = "flex";
 }
+
+// ajout photo 
+
 const fileInput = document.getElementById("file-upload");
 const preview = document.getElementById("img-preview");
 const uploadLabel = document.getElementById("upload-label");
@@ -323,4 +327,3 @@ document.querySelector(".add-photo-form form").addEventListener("submit", async 
     uploadLabel.style.display = "flex";
   }
 });
-
