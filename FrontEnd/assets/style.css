@@ -572,3 +572,8 @@ i.fa-image {
 .modal.is-visible {
   display: flex;
 }
+#img-ciel {
+display: block;
+    margin: auto;
+    width: 80%;
+}

@@ -220,6 +220,18 @@ function openModal1() {
     container.appendChild(figure);
   }
 }
+document.querySelectorAll(".js-modal-close").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelectorAll(".modal").forEach((modal) => {
+      modal.style.display = "none";
+      modal.setAttribute("aria-hidden", "true");
+      modal.removeAttribute("aria-modal");
+    });
+    modal = null;
+  });
+});
+
 
 function switchModal() {
   openModal2Only();
@@ -245,6 +257,7 @@ function switchModal() {
     });
 }
 
+
 function openModal1Only() {
   document.getElementById("modal1").style.display = "flex";
   document.getElementById("modal2").style.display = "none";
@@ -254,7 +267,3 @@ function openModal2Only() {
   document.getElementById("modal1").style.display = "none";
   document.getElementById("modal2").style.display = "flex";
 }
-
-
-
-// Changer l'innerhtml de la modale et l'implanter directement dans l'html et utiliser la propriète hidden -> ( visibility ) (look) avec tous les boutons ( flêches etc )
