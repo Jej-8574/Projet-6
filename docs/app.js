@@ -31,13 +31,9 @@ async function getWorks(filter) {
 
 async function getCategories() {
   const url = "http://localhost:5678/api/categories";
-
-  // --- anti-doublons sur la barre de filtres (on garde le bouton "Tous") ---
   const container = document.querySelector(".div-container");
   if (container) container.querySelectorAll("div").forEach((el) => el.remove());
-  // -------------------------------------------------------------------------
-
-  try {
+    try {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Response status: ${response.status}`);
     const json = await response.json();
@@ -47,9 +43,9 @@ async function getCategories() {
   }
 }
 
-// ================== RENDER ==================
+
 function setFigure(data) {
-  // figure pour la galerie publique
+
   const figure = document.createElement("figure");
   figure.setAttribute("id", data.id);
   figure.innerHTML = `
@@ -58,7 +54,6 @@ function setFigure(data) {
   `;
   document.querySelector(".gallery").append(figure);
 
-  // figure pour la galerie de la modale (avec poubelle)
   const figure2 = document.createElement("figure");
   figure2.innerHTML = `
     <div class="image-container">
@@ -81,36 +76,31 @@ function setTous() {
 
 function setFilter(data) {
   const div = document.createElement("div");
-  div.className = data.id; // id de catégorie en classe
+  div.className = data.id;
   div.innerHTML = data.name;
   div.addEventListener("click", () => getWorks(data.id));
   document.querySelector(".div-container").append(div);
 }
 
-// ================== ADMIN MODE (UI selon connexion) ==================
+// ================== ADMIN MODE ==================
 function displayAdminMode() {
   const token = localStorage.getItem("authToken");
   const editLink = document.getElementById("edit-link");
   const filtersContainer = document.getElementById("filters-container");
   const loginLink = document.getElementById("login");
 
-  // filet de sécu : cachés par défaut
   editLink?.classList.add("hidden");
   filtersContainer?.classList.add("hidden");
 
   if (token) {
-    // bandeau noir
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
     editBanner.innerHTML =
       '<p><a href="#modal1"><i class="fa-regular fa-pen-to-square"></i> Mode Édition</a></p>';
     document.body.prepend(editBanner);
-
-    // afficher éléments d'édition & filtres
     editLink?.classList.remove("hidden");
     filtersContainer?.classList.remove("hidden");
 
-    // login -> logout
     if (loginLink) {
       loginLink.innerText = "Logout";
       loginLink.href = "#";
@@ -121,7 +111,6 @@ function displayAdminMode() {
       };
     }
   } else {
-    // pas connecté -> tout reste caché
     editLink?.classList.add("hidden");
     filtersContainer?.classList.add("hidden");
 
@@ -258,7 +247,6 @@ window.addEventListener("keydown", function (e) {
   if (e.key === "Tab" && modal !== null) focusInModal(e);
 });
 
-// ================== DELETE WORK ==================
 async function deleteWorks(id, figureElement) {
   const url = `http://localhost:5678/api/works/${id}`;
   const token = localStorage.getItem("authToken");
@@ -282,7 +270,6 @@ async function deleteWorks(id, figureElement) {
   }
 }
 
-// ================== ADD PHOTO ==================
 const fileInput = document.getElementById("file-upload");
 const preview = document.getElementById("img-preview");
 const uploadLabel = document.getElementById("upload-label");
@@ -328,7 +315,6 @@ document.querySelector(".add-photo-form form")?.addEventListener("submit", async
   }
 });
 
-// ================== INIT (une seule fois) ==================
 document.addEventListener("DOMContentLoaded", () => {
   getWorks();
   getCategories();
