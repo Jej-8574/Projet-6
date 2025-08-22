@@ -75,15 +75,33 @@ function setFilter(data) {
 }
 
 function displayAdminMode() {
-  if (localStorage.getItem("authToken")) {
+  const token = localStorage.getItem("authToken");
+  const filtersContainer = document.getElementById("filters-container");
+  const loginLink = document.getElementById("login");
+
+  if (token) {
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
     editBanner.innerHTML =
-      '<p><a href="#modal1"><i class="fa-regular fa-pen-to-square"></i>Mode Édition</a></p>';
+      '<p><a href="#modal1"><i class="fa-regular fa-pen-to-square"></i> Mode Édition</a></p>';
     document.body.prepend(editBanner);
-    document.getElementById("login").innerText = "log out";
+    if (filtersContainer) filtersContainer.style.display = "flex";
+
+    loginLink.innerText = "Logout";
+    loginLink.href = "#";
+    loginLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("authToken");
+      window.location.href = "login.html";
+    });
+  } else {
+    if (filtersContainer) filtersContainer.style.display = "none";
+    loginLink.innerText = "Login";
+    loginLink.href = "login.html";
   }
 }
+
+
 
 function logout() {
   localStorage.removeItem("authToken");
@@ -234,6 +252,7 @@ function openModal1() {
 document.querySelectorAll(".js-modal-close").forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
+    document.activeElement.blur();
     document.querySelectorAll(".modal").forEach((modal) => {
       modal.style.display = "none";
       modal.setAttribute("aria-hidden", "true");
@@ -327,3 +346,6 @@ document.querySelector(".add-photo-form form").addEventListener("submit", async 
     uploadLabel.style.display = "flex";
   }
 });
+
+
+

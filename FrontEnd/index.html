@@ -46,9 +46,10 @@
     </div>
     <h3>Ajout photo</h3>
 <div class="button-add-photo">
-  <img id="img-preview" style="display: none; width: 100%;">
- <label id="upload-label" for="file-upload" class="file-upload">+ Ajouter photo</label>
-<input type="file" id="file-upload" style="display: none;">
+<img id="img-preview" class="hidden preview">
+<label id="upload-label" for="file-upload" class="file-upload">+ Ajouter photo</label>
+<input type="file" id="file-upload" class="hidden">
+
 
 </div>
 
@@ -103,13 +104,19 @@
         </article>
       </section>
 <section id="portfolio">
-  <div class="portfolio-header">
-    <h2>Mes projets</h2>
-<p><a href="#modal1" class="js-modal"><i class="fa-regular fa-pen-to-square"></i> modifier</a></p>
-  </div>
+<div class="portfolio-header">
+  <h2>Mes projets</h2>
+<p id="edit-link" class="hidden">
+  <a href="#modal1" class="js-modal">
+    <i class="fa-regular fa-pen-to-square"></i> modifier
+  </a>
+</p>
+
+</div>
+
 </section>
 
-        <div class="div-container">
+        <div class="div-container" id="filters-container">
           <button class="tous" id="tous">Tous</button>
         </div>
         <div class="gallery"></div>
