@@ -1,5 +1,10 @@
+// ================== STATE ==================
 let allWorks = [];
+let modal = null;
+const focusableSelector = "button, a, input, textarea";
+let focusables = [];
 
+// ================== API ==================
 async function getWorks(filter) {
   document.querySelector(".gallery").innerHTML = "";
   document.querySelector(".gallery-modal").innerHTML = "";
@@ -24,8 +29,27 @@ async function getWorks(filter) {
   }
 }
 
+async function getCategories() {
+  const url = "http://localhost:5678/api/categories";
 
+  // --- anti-doublons sur la barre de filtres (on garde le bouton "Tous") ---
+  const container = document.querySelector(".div-container");
+  if (container) container.querySelectorAll("div").forEach((el) => el.remove());
+  // -------------------------------------------------------------------------
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
+    const json = await response.json();
+    for (let i = 0; i < json.length; i++) setFilter(json[i]);
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+// ================== RENDER ==================
 function setFigure(data) {
+  // figure pour la galerie publique
   const figure = document.createElement("figure");
   figure.setAttribute("id", data.id);
   figure.innerHTML = `
@@ -34,6 +58,7 @@ function setFigure(data) {
   `;
   document.querySelector(".gallery").append(figure);
 
+  // figure pour la galerie de la modale (avec poubelle)
   const figure2 = document.createElement("figure");
   figure2.innerHTML = `
     <div class="image-container">
@@ -48,89 +73,67 @@ function setFigure(data) {
   document.querySelector(".gallery-modal").append(figure2);
 }
 
-async function getCategories() {
-  const url = "http://localhost:5678/api/categories";
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Response status: ${response.status}`);
-    const json = await response.json();
-    for (let i = 0; i < json.length; i++) setFilter(json[i]);
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
 function setTous() {
-  document.querySelector(".tous").addEventListener("click", () => {
-    getWorks();
-  });
+  const btn = document.querySelector(".tous");
+  if (!btn) return;
+  btn.addEventListener("click", () => getWorks());
 }
 
 function setFilter(data) {
   const div = document.createElement("div");
-  div.className = data.id;
+  div.className = data.id; // id de catégorie en classe
   div.innerHTML = data.name;
   div.addEventListener("click", () => getWorks(data.id));
   document.querySelector(".div-container").append(div);
 }
 
+// ================== ADMIN MODE (UI selon connexion) ==================
 function displayAdminMode() {
   const token = localStorage.getItem("authToken");
+  const editLink = document.getElementById("edit-link");
   const filtersContainer = document.getElementById("filters-container");
   const loginLink = document.getElementById("login");
 
+  // filet de sécu : cachés par défaut
+  editLink?.classList.add("hidden");
+  filtersContainer?.classList.add("hidden");
+
   if (token) {
+    // bandeau noir
     const editBanner = document.createElement("div");
     editBanner.className = "edit";
     editBanner.innerHTML =
       '<p><a href="#modal1"><i class="fa-regular fa-pen-to-square"></i> Mode Édition</a></p>';
     document.body.prepend(editBanner);
-    if (filtersContainer) filtersContainer.style.display = "flex";
 
-    loginLink.innerText = "Logout";
-    loginLink.href = "#";
-    loginLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.removeItem("authToken");
-      window.location.href = "login.html";
-    });
+    // afficher éléments d'édition & filtres
+    editLink?.classList.remove("hidden");
+    filtersContainer?.classList.remove("hidden");
+
+    // login -> logout
+    if (loginLink) {
+      loginLink.innerText = "Logout";
+      loginLink.href = "#";
+      loginLink.onclick = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("authToken");
+        location.reload();
+      };
+    }
   } else {
-    if (filtersContainer) filtersContainer.style.display = "none";
-    loginLink.innerText = "Login";
-    loginLink.href = "login.html";
+    // pas connecté -> tout reste caché
+    editLink?.classList.add("hidden");
+    filtersContainer?.classList.add("hidden");
+
+    if (loginLink) {
+      loginLink.innerText = "Login";
+      loginLink.href = "login.html";
+      loginLink.onclick = null;
+    }
   }
 }
 
-
-
-function logout() {
-  localStorage.removeItem("authToken");
-  window.location.href = "login.html";
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const link = document.getElementById("login");
-  const token = localStorage.getItem("authToken");
-  if (token) {
-    link.innerText = "Logout";
-    link.href = "#";
-    link.addEventListener("click", logout);
-  } else {
-    link.innerText = "Login";
-    link.href = "login.html";
-  }
-});
-
-getWorks();
-getCategories();
-setTous();
-displayAdminMode();
-
-// ========== MODALE ==========
-let modal = null;
-const focusableSelector = "button, a, input, textarea";
-let focusables = [];
-
+// ================== MODALES ==================
 const openModal = function (e) {
   e.preventDefault();
   const target = document.querySelector(e.target.getAttribute("href"));
@@ -144,9 +147,7 @@ const openModal = function (e) {
   modal.setAttribute("aria-modal", "true");
 
   modal.addEventListener("click", closeModal);
-  modal
-    .querySelector(".js-modal-stop")
-    ?.addEventListener("click", stopPropagation);
+  modal.querySelector(".js-modal-stop")?.addEventListener("click", stopPropagation);
 
   openModal1();
 };
@@ -159,12 +160,8 @@ const closeModal = function (e) {
   modal.setAttribute("aria-hidden", "true");
   modal.removeAttribute("aria-modal");
   modal.removeEventListener("click", closeModal);
-  modal
-    .querySelector(".js-modal-close")
-    ?.removeEventListener("click", closeModal);
-  modal
-    .querySelector(".js-modal-stop")
-    ?.removeEventListener("click", stopPropagation);
+  modal.querySelector(".js-modal-close")?.removeEventListener("click", closeModal);
+  modal.querySelector(".js-modal-stop")?.removeEventListener("click", stopPropagation);
   modal = null;
 };
 
@@ -181,52 +178,11 @@ const focusInModal = function (e) {
   focusables[index]?.focus();
 };
 
-document.querySelectorAll(".js-modal").forEach((a) => {
-  a.addEventListener("click", openModal);
-});
-
-window.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") closeModal(e);
-  if (e.key === "Tab" && modal !== null) focusInModal(e);
-});
-
-// ========== SUPPRESSION ==========
-async function deleteWorks(id, figureElement) {
-  const url = `http://localhost:5678/api/works/${id}`;
-  const token = localStorage.getItem("authToken");
-
-  try {
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.ok) {
-      figureElement.remove();
-      document.getElementById(id)?.remove();
-      allWorks=allWorks.filter(item => item.id !== id)
-    } else {
-      alert("Échec de la suppression");
-    }
-  } catch (error) {
-    console.error("Erreur réseau :", error);
-    alert("Une erreur est survenue");
-  }
-}
-
-// ========== MODALE PHOTO ==========
-
 function openModal1() {
   openModal1Only();
 
-  document
-    .querySelector(".js-modal-close")
-    .addEventListener("click", closeModal);
-  document
-    .querySelector(".add-photo-button")
-    .addEventListener("click", switchModal);
+  document.querySelector(".js-modal-close")?.addEventListener("click", closeModal);
+  document.querySelector(".add-photo-button")?.addEventListener("click", switchModal);
 
   const container = document.querySelector(".gallery-modal");
   container.innerHTML = "";
@@ -241,22 +197,21 @@ function openModal1() {
         <i class="fa-solid fa-trash-can overlay-icon"></i>
       </div>
     `;
-
     figure.querySelector(".fa-trash-can").addEventListener("click", () => {
       deleteWorks(data.id, figure);
     });
-
     container.appendChild(figure);
   }
 }
+
 document.querySelectorAll(".js-modal-close").forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     document.activeElement.blur();
-    document.querySelectorAll(".modal").forEach((modal) => {
-      modal.style.display = "none";
-      modal.setAttribute("aria-hidden", "true");
-      modal.removeAttribute("aria-modal");
+    document.querySelectorAll(".modal").forEach((m) => {
+      m.style.display = "none";
+      m.setAttribute("aria-hidden", "true");
+      m.removeAttribute("aria-modal");
     });
     modal = null;
   });
@@ -265,12 +220,8 @@ document.querySelectorAll(".js-modal-close").forEach((btn) => {
 function switchModal() {
   openModal2Only();
 
-  document
-    .querySelector(".js-modal-close")
-    .addEventListener("click", closeModal);
-  document
-    .querySelector(".js-modal-back")
-    .addEventListener("click", openModal1Only);
+  document.querySelector(".js-modal-close")?.addEventListener("click", closeModal);
+  document.querySelector(".js-modal-back")?.addEventListener("click", openModal1Only);
 
   const selectCategory = document.getElementById("category");
   selectCategory.innerHTML = '<option value=""></option>';
@@ -294,19 +245,49 @@ function openModal1Only() {
   document.getElementById("modal1").style.display = "flex";
   document.getElementById("modal2").style.display = "none";
 }
-
 function openModal2Only() {
   document.getElementById("modal1").style.display = "none";
   document.getElementById("modal2").style.display = "flex";
 }
 
-// ajout photo 
+document.querySelectorAll(".js-modal").forEach((a) => {
+  a.addEventListener("click", openModal);
+});
+window.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") closeModal(e);
+  if (e.key === "Tab" && modal !== null) focusInModal(e);
+});
 
+// ================== DELETE WORK ==================
+async function deleteWorks(id, figureElement) {
+  const url = `http://localhost:5678/api/works/${id}`;
+  const token = localStorage.getItem("authToken");
+
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (response.ok) {
+      figureElement.remove();
+      document.getElementById(id)?.remove();
+      allWorks = allWorks.filter((item) => item.id !== id);
+    } else {
+      alert("Échec de la suppression");
+    }
+  } catch (error) {
+    console.error("Erreur réseau :", error);
+    alert("Une erreur est survenue");
+  }
+}
+
+// ================== ADD PHOTO ==================
 const fileInput = document.getElementById("file-upload");
 const preview = document.getElementById("img-preview");
 const uploadLabel = document.getElementById("upload-label");
 
-fileInput.addEventListener("change", function () {
+fileInput?.addEventListener("change", function () {
   const file = this.files[0];
   if (file && file.type.startsWith("image/")) {
     const previewURL = URL.createObjectURL(file);
@@ -316,7 +297,7 @@ fileInput.addEventListener("change", function () {
   }
 });
 
-document.querySelector(".add-photo-form form").addEventListener("submit", async (e) => {
+document.querySelector(".add-photo-form form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const file = document.getElementById("file-upload").files[0];
@@ -339,7 +320,7 @@ document.querySelector(".add-photo-form form").addEventListener("submit", async 
 
   if (res.ok) {
     allWorks = [];
-    getWorks();
+    await getWorks();
     openModal1Only();
     e.target.reset();
     preview.style.display = "none";
@@ -347,5 +328,13 @@ document.querySelector(".add-photo-form form").addEventListener("submit", async 
   }
 });
 
+// ================== INIT (une seule fois) ==================
+document.addEventListener("DOMContentLoaded", () => {
+  getWorks();
+  getCategories();
+  setTous();
+  displayAdminMode();
 
-
+  console.log("token?", !!localStorage.getItem("authToken"));
+  console.log("edit-link classes:", document.getElementById("edit-link")?.className);
+});

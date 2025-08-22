@@ -579,12 +579,5 @@ i.fa-image {
   object-fit: cover;
   border-radius: 3px;
 }
-.hidden {
-  display: none;
-}
-
-.preview {
-  width: 100%;
-}
-.hidden { display: none; }
+.hidden { display: none !important; }
 .preview { width: 100%; }
